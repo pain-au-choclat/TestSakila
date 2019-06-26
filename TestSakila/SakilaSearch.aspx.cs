@@ -68,7 +68,6 @@ namespace TestSakila
                     SqlDataAdapter sda = new SqlDataAdapter(sqlCom);
                     sda.Fill(dt);
 
-                    //Sort datatable the bind to grid view
                     GridView1.DataSource = dt;
                     GridView1.DataBind();
 
