@@ -20,16 +20,17 @@ namespace TestSakila
             DataTable actors = new DataTable();
 
             //Populate the drop down list
-            if (ActorList.Items.Count == 1)
+            if (!IsPostBack)
             {
                 using (SqlConnection con = new SqlConnection(dbConn))
                 {
                     try
                     {
-                        SqlDataAdapter adapter = new SqlDataAdapter("SELECT CONCAT(first_name, ' ', last_name) AS Result FROM actor", con);
+                        SqlDataAdapter adapter = new SqlDataAdapter("SELECT actor_id, CONCAT(first_name, ' ', last_name) AS Result FROM actor", con);
                         adapter.Fill(actors);
 
                         ActorList.DataSource = actors;
+                        ActorList.DataValueField = "actor_id";
                         ActorList.DataTextField = "Result";
                         ActorList.DataBind();
                     }
@@ -62,7 +63,7 @@ namespace TestSakila
                                                             HAVING COUNT(*) > 0
                                                             ORDER BY pop DESC", sqlCon);
 
-                    sqlCom.Parameters.AddWithValue("@actorList", ActorList.SelectedIndex);
+                    sqlCom.Parameters.AddWithValue("@actorList", ActorList.SelectedValue);
 
                     SqlDataAdapter sda = new SqlDataAdapter(sqlCom);
                     sda.Fill(dt);
